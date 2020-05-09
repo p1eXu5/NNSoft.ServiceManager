@@ -54,3 +54,14 @@ unsigned fibonacci_index()
 {
     return index_;
 }
+
+SC_HANDLE openSCManager() 
+{
+    SC_HANDLE sc = OpenSCManagerW(nullptr, SERVICES_ACTIVE_DATABASE, SC_MANAGER_ALL_ACCESS);
+    return sc;
+}
+
+bool closeServiceHandle( SC_HANDLE sc )
+{
+    return CloseServiceHandle( sc );
+}

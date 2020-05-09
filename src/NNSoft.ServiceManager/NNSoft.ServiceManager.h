@@ -1,10 +1,10 @@
 // MathLibrary.h - Contains declarations of math functions
 #pragma once
 
-#ifdef MATHLIBRARY_EXPORTS
-#define MATHLIBRARY_API __declspec(dllexport)
+#ifdef SERVICES_API
+#define SERVICES_API __declspec(dllexport)
 #else
-#define MATHLIBRARY_API __declspec(dllimport)
+#define SERVICES_API __declspec(dllimport)
 #endif
 
 // The Fibonacci recurrence relation describes a sequence F
@@ -19,16 +19,20 @@
 // Initialize a Fibonacci relation sequence
 // such that F(0) = a, F(1) = b.
 // This function must be called before any other function.
-extern "C" MATHLIBRARY_API void fibonacci_init(
+extern "C" SERVICES_API void fibonacci_init(
     const unsigned long long a, const unsigned long long b);
 
 // Produce the next value in the sequence.
 // Returns true on success and updates current value and index;
 // false on overflow, leaves current value and index unchanged.
-extern "C" MATHLIBRARY_API bool fibonacci_next();
+extern "C" SERVICES_API bool fibonacci_next();
 
 // Get the current value in the sequence.
-extern "C" MATHLIBRARY_API unsigned long long fibonacci_current();
+extern "C" SERVICES_API unsigned long long fibonacci_current();
 
 // Get the position of the current value in the sequence.
-extern "C" MATHLIBRARY_API unsigned fibonacci_index();
+extern "C" SERVICES_API unsigned fibonacci_index();
+
+extern "C" SERVICES_API SC_HANDLE openSCManager();
+
+extern "C" SERVICES_API bool closeServiceHandle(SC_HANDLE sc);

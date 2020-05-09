@@ -3,10 +3,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NNSoft.ServiceManager.DesktopClient"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:NNSoft.ServiceManager.DesktopClient.ViewModels;assembly=NNSoft.ServiceManager.DesktopClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
         
-    </Grid>
+
+        Title="MainWindow" Height="450" Width="800">
+
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding ElementName=ListView, Path=SelectedItem.Pid}"></TextBlock>
+        </Grid>
+        <TabControl>
+            <TabItem Header="Services">
+                <ListView x:Name="ListView" ItemsSource="{Binding ServiceVms}" SelectedItem="{Binding SelectedService}" SelectionMode="Single" >
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding StartCommand}" 
+                                      CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}" 
+                                      Header="Start"></MenuItem>
+                            <MenuItem Command="{Binding StopCommand}"
+                                      CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}" 
+                                      Header="Stop"></MenuItem>
+                            <MenuItem Command="{Binding RestartCommand}" 
+                                      CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}" 
+                                      Header="Restart"></MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" 
+                                            Header="Name" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Pid}" 
+                                            Header="PID" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Description}" 
+                                            Header="Description" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Status}" 
+                                            Header="Status" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Group}" 
+                                            Header="Group" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=ImagePath}" 
+                                            Header="Image Path" Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>

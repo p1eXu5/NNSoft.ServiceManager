@@ -13,6 +13,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <Deterministic>true</Deterministic>
+
+    <DisableOutOfProcTaskHost>true</DisableOutOfProcTaskHost>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +51,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,7 +90,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\..\submodules\src\p1eXu5.Wpf.MvvmBaseLibrary\p1eXu5.Wpf.MvvmBaseLibrary.csproj">
+      <Project>{9b8dc4ff-e6e5-4155-829a-b984fc77b55d}</Project>
+      <Name>p1eXu5.Wpf.MvvmBaseLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NNSoft.ServiceManager.Adapter\NNSoft.ServiceManager.Adapter.csproj">
+      <Project>{12a4dbe6-576d-4efe-9d24-9217c37c3a64}</Project>
+      <Name>NNSoft.ServiceManager.Adapter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
