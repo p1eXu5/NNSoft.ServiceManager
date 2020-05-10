@@ -36,6 +36,21 @@
     <ClInclude Include="ServiceDto.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
+    <ClInclude Include="..\ServicesConsole\ServiceConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServicesConsole\ServiceHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServicesConsole\ServiceEnumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServicesConsole\ServiceController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServicesConsole\ServiceConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

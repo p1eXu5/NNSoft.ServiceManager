@@ -1,6 +1,8 @@
 // MathLibrary.h - Contains declarations of math functions
 #pragma once
 
+#include "ServiceEnumerator.h"
+
 #ifdef SERVICES_API
 #define SERVICES_API __declspec(dllexport)
 #else
@@ -36,3 +38,14 @@ extern "C" SERVICES_API unsigned fibonacci_index();
 extern "C" SERVICES_API SC_HANDLE openSCManager();
 
 extern "C" SERVICES_API bool closeServiceHandle(SC_HANDLE sc);
+
+struct MyStruct {
+    char* a;
+};
+
+typedef void (*func)(const ServiceStatusProcess& process);
+typedef void (*func2)( MyStruct* process);
+
+
+extern "C" SERVICES_API bool EnumServices( func callback );
+extern "C" SERVICES_API bool EnumServices2(func2 callback );

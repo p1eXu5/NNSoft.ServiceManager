@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -9,6 +10,14 @@ namespace NNSoft.ServiceManager.Adapter
     {
         private List< IServiceSubscriber > _subscribers;
 
+        private delegate void Callback( ref ServiceStatusProcess service );
+        public delegate void Callback2( ref MyStruct service );
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MyStruct
+        {
+            [MarshalAs(UnmanagedType.LPStr)] public string A;
+        }
 
         public List< IServiceSubscriber > Subscribers => 
             
@@ -82,11 +91,13 @@ namespace NNSoft.ServiceManager.Adapter
         {
             var sc = IntPtr.Size == 8 ? OpenSCManager_64() : OpenSCManager_32();
 
+            var cb = new Callback2( ReadStatuses2 );
+
             if ( IntPtr.Size == 8 ) {
-                CloseServiceHandle_64( sc );
+                EnumServices_64( cb );
             }
             else {
-                CloseServiceHandle_32( sc );
+                EnumServices_32( cb );
             }
         }
 
@@ -103,5 +114,34 @@ namespace NNSoft.ServiceManager.Adapter
 
         [DllImport("NNSoft.ServiceManagerx64.dll", EntryPoint = "closeServiceHandle", CallingConvention = CallingConvention.Cdecl)]
         private static extern bool CloseServiceHandle_64( IntPtr sc );
+
+
+        [DllImport("NNSoft.ServiceManagerWin32.dll", EntryPoint = "EnumServices2", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool EnumServices_32( Callback2 callback );
+
+        [DllImport("NNSoft.ServiceManagerx64.dll", EntryPoint = "EnumServices2", CallingConvention = CallingConvention.Cdecl )]
+        private static extern bool EnumServices_64( Callback2 callback );
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ServiceStatusProcess
+        {
+            public string ServiceName;
+            public string DisplayName;
+            public int Status;
+        }
+
+        private static readonly ObservableCollection< ServiceStatusProcess > _services = new ObservableCollection< ServiceStatusProcess >();
+
+        public static void ReadStatuses( ref ServiceStatusProcess service )
+        {
+            _services.Add( service );
+        }
+
+        private static readonly ObservableCollection< MyStruct > _iservices = new ObservableCollection< MyStruct >();
+
+        private static void ReadStatuses2( ref MyStruct service )
+        {
+            _iservices.Add( service );
+        }
     }
 }

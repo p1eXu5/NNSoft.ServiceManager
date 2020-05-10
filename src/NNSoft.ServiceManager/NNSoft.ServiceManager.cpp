@@ -3,6 +3,10 @@
 #include <utility>
 #include <limits.h>
 #include "NNSoft.ServiceManager.h"
+#include <objbase.h>
+#include <strsafe.h>
+
+
 
 // DLL internal state variables:
 static unsigned long long previous_;  // Previous value, if any
@@ -64,4 +68,31 @@ SC_HANDLE openSCManager()
 bool closeServiceHandle( SC_HANDLE sc )
 {
     return CloseServiceHandle( sc );
+}
+
+bool EnumServices(func callback)
+{
+    auto services = ServiceEnumerator::EnumerateServices();
+    for (auto const& s : services)
+    {
+        callback(s);
+    }
+
+    return false;
+}
+
+bool EnumServices2(func2 callback)
+{
+    std::wstring name(L"Steve Nash");
+
+    const size_t alloc_size = 64;
+    STRSAFE_LPSTR result = (STRSAFE_LPSTR)CoTaskMemAlloc(alloc_size);
+    STRSAFE_LPCSTR teststr = "This is return value";
+    StringCchCopyA(result, alloc_size, teststr);
+
+    MyStruct* s = (MyStruct*)CoTaskMemAlloc(alloc_size + sizeof(MyStruct));
+    s->a = (char*)result;
+
+    callback(s);
+    return false;
 }
